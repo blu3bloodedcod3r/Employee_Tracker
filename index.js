@@ -78,9 +78,12 @@ function viewAllDepts() {
 //THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 
 function viewAllEmps() {
-    const sql = `SELECT emp.id, emp.first_name, emp.last_name, CONCAT(mgr.first_name, ' ', mngr.last_name AS manager
+    const sql = `SELECT emp.id, emp.first_name, emp.last_name, title, salary,
+                CONCAT(mgr.first_name, ' ', mngr.last_name AS manager
                 FROM employee emp
-                JOIN employee mngr ON mngr.id = emp.manager_id`;
+                LEFT JOIN employee mngr ON mngr.id = emp.manager_id
+                LEFT JOIN role On emp.role_id = role.id
+                LEFT JOIN role.department_id = department.id`;
     //review activity 21/22
     db.promise()
         .query(sql)
