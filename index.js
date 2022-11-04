@@ -28,8 +28,7 @@ inquirer.createPromptModule([
             init();
             break;
         case 'view all employees':
-            console.log("You want to view all employees.")
-            init();
+            viewAllEmps();
             break;
         case 'add a department':
             console.log("You want to add a department.")
@@ -65,6 +64,23 @@ init();
 
 function viewAllDepts() {
     const sql = 'SELECT * FROM department';
+    //review activity 21/22
+    db.promise()
+        .query(sql)
+        .then(([rows, _]) => {
+            console.table(rows);
+            init();
+        })
+        .catch(err => console.log(err));
+}
+
+//WHEN I choose to view all employees
+//THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+
+function viewAllEmps() {
+    const sql = `SELECT emp.id, emp.first_name, emp.last_name, CONCAT(mgr.first_name, ' ', mngr.last_name AS manager
+                FROM employee emp
+                JOIN employee mngr ON mngr.id = emp.manager_id`;
     //review activity 21/22
     db.promise()
         .query(sql)
