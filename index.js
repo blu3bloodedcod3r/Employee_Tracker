@@ -42,12 +42,8 @@ inquirer.createPromptModule([
             console.log("You want to update an employee role.")
             init();
             break;
-        case 'View employees by department.':
-            console.log("You want to View employees by department..")
-            init();
-            break;
-        case 'Delete departments, roles, and employees':
-            console.log("You want to Delete departments, roles, and employees.")
+        case 'add a role.':
+            console.log("You want to add a role.")
             init();
             break;
         default:
