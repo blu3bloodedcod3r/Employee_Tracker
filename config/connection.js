@@ -1,10 +1,11 @@
 const mysql = require('mysql2');
+require('dotenv')
 
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'Booddha',
-    database: "insert name here",
+    user: '',
+    password: '',
+    database: "employee_db",
 })
 
 module.exports = db;
