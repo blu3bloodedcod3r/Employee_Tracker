@@ -36,8 +36,11 @@ inquirer.prompt([
             {
                 name: 'update an employee role',
                 value: 'update_an_employee_role'
-            }, 
-            'Quit'
+            },
+            {
+                name: 'Quit',
+                value: 'QUIT_'
+            }
             ]
     }
 ]).then(answer => {
@@ -45,26 +48,26 @@ inquirer.prompt([
         case 'view_all_departments':
             viewAllDepts();
             break;
-        case 'view all roles':
+        case 'view_all_roles':
             viewAllRoles();
             break;
-        case 'view all employees':
+        case 'view_all_employees':
             viewAllEmps();
             break;
-        case 'add a department':
+        case 'add_a_department':
             addDept();
             break;
-        case 'add an employee':
+        case 'add_an_employee':
             addEmp();
             break;
-        case 'update an employee role':
+        case 'update_an_employee_role':
             updateEmpRole();
             break;
-        case 'add a role.':
+        case 'add_a_role':
             addRole();
             break;
         default:
-            process.exit();
+            console.log('jomel')//process.exit();
     }
 })
 .catch(err => console.log(err))
@@ -151,6 +154,11 @@ function addRole() {
 // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 
 function addEmp() {
+    inquirer.prompt ([
+        {
+
+        }
+    ])
     const sql = `SELECT emp.id, emp.first_name, emp.last_name, role.title
     CONCAT(mgr.first_name, ' ', mngr.last_name AS manager
     FROM employee emp
