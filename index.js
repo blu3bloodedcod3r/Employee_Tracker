@@ -186,7 +186,7 @@ function addEmp() {
 }
 
 function updateEmpRole() {
-    const sql = 'UPDATE emp.role_id, emp.id SETemployee WHERE role ON role.id = emp.role.id'
+    const sql = 'UPDATE emp.role_id, emp.id SET employee WHERE role ON role.id = emp.role.id'
     db.promise()
     .query(sql)
     .then(([rows, _]) => {
