@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection')
-require('console.table');
+require('dotenv').config();
 
 function init () {
 inquirer.createPromptModule([
@@ -10,15 +10,14 @@ inquirer.createPromptModule([
         message: 'What would you like to do?',
         choices : ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'Quit']
     }
-])
-.then(answer => {
+]).then(answer => {
     switch (answer.action) {
         case 'view all departments':
             viewAllDepts();
             break;
         case 'view all roles':
             console.log("You want to view all roles.")
-            init();
+            viewAllRoles();
             break;
         case 'view all employees':
             viewAllEmps();
@@ -106,9 +105,10 @@ function addDept() {
     db.promise()
     .query(sql)
     .then(([rows, _]) => {
-        console.table (rows);
+        console.table(rows);
         init();
     })
+    .catch(err => console.log(err));
 }
 
 // WHEN I choose to add a role
@@ -119,9 +119,10 @@ function addRole() {
     db.promise()
     .query(sql)
     .then(([rows, _]) => {
-        console.table (rows);
+        console.table(rows);
         init();
     })
+    .catch(err => console.log(err));
 }
 
 // WHEN I choose to add an employee
@@ -137,9 +138,10 @@ function addEmp() {
     db.promise()
     .query(sql)
     .then(([rows, _]) => {
-        console.table (rows);
+        console.table(rows);
         init();
     })
+    .catch(err => console.log(err));
 }
 
 // WHEN I choose to update an employee role
@@ -150,7 +152,8 @@ function updateEmpRole() {
     db.promise()
     .query(sql)
     .then(([rows, _]) => {
-        console.table (rows);
+        console.table(rows);
         init();
     })
+    .catch(err => console.log(err));
 }
