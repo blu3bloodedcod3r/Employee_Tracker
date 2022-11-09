@@ -8,34 +8,59 @@ inquirer.prompt([
         type: 'list',
         name: 'action',
         message: 'What would you like to do?',
-        choices : ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role', 'Quit']
+        choices : [
+            {
+                name: 'view all departments',
+                value: 'view_all_departments'
+            }, 
+            { 
+                name: 'view all roles',
+                value: 'view_all_roles'
+            }, 
+            {
+                name: 'view all employees',
+                value: 'view_all_employees'
+            }, 
+            {
+                name: 'add a department',
+                value: 'add_a_department'
+            }, 
+            {
+                name: 'add a role',
+                value: 'add_a_role'
+            }, 
+            {
+                name: 'add an employee',
+                value: 'add_an_employee'
+            }, 
+            {
+                name: 'update an employee role',
+                value: 'update_an_employee_role'
+            }, 
+            'Quit'
+            ]
     }
 ]).then(answer => {
     switch (answer.action) {
-        case 'view all departments':
+        case 'view_all_departments':
             viewAllDepts();
             break;
         case 'view all roles':
-            console.log("You want to view all roles.")
             viewAllRoles();
             break;
         case 'view all employees':
             viewAllEmps();
             break;
         case 'add a department':
-            console.log("You want to add a department.")
             addDept();
             break;
         case 'add an employee':
-            console.log("You want to add an employee.")
             addEmp();
             break;
         case 'update an employee role':
-            console.log("You want to update an employee role.")
             updateEmpRole();
             break;
         case 'add a role.':
-            console.log("You want to add a role.")
             addRole();
             break;
         default:
@@ -44,8 +69,6 @@ inquirer.prompt([
 })
 .catch(err => console.log(err))
 }
-
-init();
 
 //WHEN I choose to view all departments
 //THEN I am presented with a formatted table showing department names and department ids
@@ -59,7 +82,7 @@ function viewAllDepts() {
             console.table(rows);
             init();
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err));   
 }
 
 // WHEN I choose to view all roles
@@ -67,7 +90,6 @@ function viewAllDepts() {
 
 function viewAllRoles() {
     const sql = 'SELECT *, department.name FROM role Join department ON department.id = role.department.id';
-    //review activity 21/22
     db.promise()
         .query(sql)
         .then(([rows, _]) => {
@@ -87,7 +109,7 @@ function viewAllEmps() {
                 LEFT JOIN employee mngr ON mngr.id = emp.manager_id
                 LEFT JOIN role On emp.role_id = role.id
                 LEFT JOIN role.department_id = department.id`;
-    //review activity 21/22
+
     db.promise()
         .query(sql)
         .then(([rows, _]) => {
@@ -157,3 +179,6 @@ function updateEmpRole() {
     })
     .catch(err => console.log(err));
 }
+
+
+init();
