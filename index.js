@@ -3,7 +3,7 @@ const db = require('./config/connection')
 require('dotenv').config();
 
 function init () {
-inquirer.createPromptModule([
+inquirer.prompt([
     {
         type: 'list',
         name: 'action',
