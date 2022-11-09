@@ -26,7 +26,7 @@ Please make sure to npm install before trying to use the application. I have ins
 
 To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
 
-    ![Screenshot of video snippet of Employee Tracker file being made via NODE environment][<img src="" href="" width="50%">]()
+![Screenshot of video snippet of Employee Tracker file being made via NODE environment][<img src="./Assets/readmescreenshot.png" href="https://bootcampspot.instructuremedia.com/embed/d6248e8a-e5c4-4301-b637-922c3a64b172" width="50%">](https://bootcampspot.instructuremedia.com/embed/d6248e8a-e5c4-4301-b637-922c3a64b172)
 
 ## Credits
 
