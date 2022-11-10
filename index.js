@@ -122,7 +122,7 @@ function addDept() {
     ]).then(answer => {
         console.log(answer.add_department)
     })
-    const sql = 'INSERT name FROM department'
+    const sql = 'INSERT department.name FROM department'
     db.promise()
     .query(sql)
     .then(([rows, _]) => {
