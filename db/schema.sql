@@ -5,12 +5,6 @@ USE employee_info;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
--- CREATE TABLE department (
---     id INT NOT NULL AUTO_INCREMENT,
---     name VARCHAR(30) NOT NULL,
---     PRIMARY KEY(id)
--- );
-
 CREATE TABLE department (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) UNIQUE NOT NULL

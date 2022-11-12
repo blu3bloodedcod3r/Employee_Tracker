@@ -5,9 +5,8 @@ const newDB = require('./db')
 init();
 
 function init () {
-    loadPrompts()
-};
-
+loadPrompts()
+}
 function loadPrompts() {
     inquirer.prompt([
         {
@@ -76,7 +75,7 @@ function loadPrompts() {
                 quit()
         }
     })
-};
+}
 
 function viewAllDepts() {
     const sql = 'SELECT * FROM department';
@@ -116,7 +115,8 @@ function viewAllEmps() {
            loadPrompts()
         })
         .catch(err => console.log(err));
-};
+}
+
 
 function addDept() {
     inquirer.prompt ([
@@ -155,32 +155,66 @@ function addEmp() {
     inquirer.prompt ([
         {
             type: 'input',
-            name: 'add_emp_first',
-            message: `What is the first_name of the employee would you like to add?`,
+            name: 'first_name',
+            message: `What is the first name of the employee would you like to add?`,
         },
         {
             type: 'input',
-            name: 'add_emp_last',
-            message: `What is the last_name of the employee would you like to add?`,
+            name: 'last_name',
+            message: `What is the last name of the employee would you like to add?`,
+        },
+        {
+            type: 'input',
+            name: 'roleID',
+            message: 'What is the roleID for this employee?',
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is the employee salary?',
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: 'Who does this employee repot to?',
+            choices: [
+                {
+                    name: "Lillian White",
+                    value: 'manager'
+                }
+            ]
         }
-    ]).then(answer => {
-        console.log(answer.add_emp_first)
-        console.log(answer.add_emp_last)
+    ])
+    .then(res => {
+        let first_name = res;
+        newDB.addEmpQuery(first_name)
+        .then(() => console.log(`just added ${first_name.first_name} to db`))
+        .then(() => loadPrompts())
     })
-
-    const sql = `INSERT emp.id, emp.first_name, emp.last_name, role.title
-    CONCAT(mgr.first_name, ' ', mngr.last_name AS manager
-    INTO employee emp
-    LEFT JOIN employee mngr ON mngr.id = emp.manager_id
-    LEFT JOIN role On emp.role_id = role.id
-    LEFT JOIN role.department_id = department.id`
-    db.promise()
-    .query(sql)
-    .then(([rows, _]) => {
-        console.table(rows);
-        loadPrompts()
+    .then(res => {
+        let last_name = res;
+        newDB.addRoleQuery(last_name)
+        .then(() => console.log(`just added ${last_name.last_name} to db`))
+        .then(() => loadPrompts())
     })
-    .catch(err => console.log(err));
+    .then(res => {
+        let role_id = res;
+        newDB.addRoleQuery(role_id)
+        .then(() => console.log(`just added ${role_id.role_id} to db`))
+        .then(() => loadPrompts())
+    })
+    .then(res => {
+        let salary = res;
+        newDB.addRoleQuery(salary)
+        .then(() => console.log(`just added ${salary.salary} to db`))
+        .then(() => loadPrompts())
+    })
+    // .then(res => {
+    //     let manager = res;
+    //     newDB.addRoleQuery(manager)
+    //     .then(() => console.log(`just added ${manager.manager} to db`))
+    //     .then(() => loadPrompts())
+    // })
 }
 
 function updateEmpRole() {
