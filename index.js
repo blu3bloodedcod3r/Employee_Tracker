@@ -5,8 +5,9 @@ const newDB = require('./db')
 init();
 
 function init () {
-loadPrompts()
-}
+    loadPrompts()
+};
+
 function loadPrompts() {
     inquirer.prompt([
         {
@@ -75,7 +76,8 @@ function loadPrompts() {
                 quit()
         }
     })
-}
+};
+
 function viewAllDepts() {
     const sql = 'SELECT * FROM department';
     //review activity 21/22
@@ -114,28 +116,8 @@ function viewAllEmps() {
            loadPrompts()
         })
         .catch(err => console.log(err));
-}
+};
 
-// function addDept(department) {
-//     inquirer.prompt ([
-//         {
-//             type: 'input',
-//             name: 'add_department',
-//             message: 'What is the name of the department would you like to add?',
-//         }
-//     ]).then(answer => {
-//         console.log(answer.add_department)
-//     })
-
-//     sql = ("INSERT INTO department SET ?", department);
-//     db.promise()
-//     .query(sql)
-//     .then(([rows, _]) => {
-//         console.table(rows); const
-//         init();
-//     })
-//     .catch(err => console.log(err));
-// }
 function addDept() {
     inquirer.prompt ([
         {
@@ -150,26 +132,23 @@ function addDept() {
         .then(() => console.log(`just added ${name.name} to db`))
         .then(() => loadPrompts())
     })
-}
+};
+
 function addRole() {
     inquirer.prompt ([
         {
             type: 'input',
-            name: 'add_role',
+            name: 'title',
             message: 'What is the role would you like to add?',
         }
-    ]).then(answer => {
-        console.log(answer.add_role)
+    ])
+    .then(res => {
+        let title = res;
+        newDB.addRoleQuery(title)
+        .then(() => console.log(`just added ${title.title} to db`))
+        .then(() => loadPrompts())
     })
 
-    const sql = 'INSERT INTO role(title, salary) FROM role LEFT JOIN Employee ON employee(first_name, last_name)'
-    db.promise()
-    .query(sql)
-    .then(([rows, _]) => {
-        console.table(rows);
-       loadPrompts();
-    })
-    .catch(err => console.log(err));
 }
 
 function addEmp() {
