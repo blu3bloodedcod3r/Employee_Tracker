@@ -1,77 +1,81 @@
 const inquirer = require('inquirer');
 const db = require('./config/connection')
+const newDB = require('./db')
+
+init();
 
 function init () {
-inquirer.prompt([
-    {
-        type: 'list',
-        name: 'action',
-        message: 'What would you like to do?',
-        choices : [
-            {
-                name: 'view all departments',
-                value: 'view_all_departments'
-            }, 
-            { 
-                name: 'view all roles',
-                value: 'view_all_roles'
-            }, 
-            {
-                name: 'view all employees',
-                value: 'view_all_employees'
-            }, 
-            {
-                name: 'add a department',
-                value: 'add_a_department'
-            }, 
-            {
-                name: 'add a role',
-                value: 'add_a_role'
-            }, 
-            {
-                name: 'add an employee',
-                value: 'add_an_employee'
-            }, 
-            {
-                name: 'update an employee role',
-                value: 'update_an_employee_role'
-            },
-            {
-                name: 'Quit',
-                value: 'QUIT_'
-            }
-            ]
-    }
-]).then(answer => {
-    switch (answer.action) {
-        case 'view_all_departments':
-            viewAllDepts();
-            break;
-        case 'view_all_roles':
-            viewAllRoles();
-            break;
-        case 'view_all_employees':
-            viewAllEmps();
-            break;
-        case 'add_a_department':
-            addDept();
-            break;
-        case 'add_an_employee':
-            addEmp();
-            break;
-        case 'update_an_employee_role':
-            updateEmpRole();
-            break;
-        case 'add_a_role':
-            addRole();
-            break;
-        default:
-            console.log('jomel')//process.exit();
-    }
-})
-.catch(err => console.log(err))
+loadPrompts()
 }
-
+function loadPrompts() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'action',
+            message: 'What would you like to do?',
+            choices : [
+                {
+                    name: 'view all departments',
+                    value: 'view_all_departments'
+                }, 
+                { 
+                    name: 'view all roles',
+                    value: 'view_all_roles'
+                }, 
+                {
+                    name: 'view all employees',
+                    value: 'view_all_employees'
+                }, 
+                {
+                    name: 'add a department',
+                    value: 'add_a_department'
+                }, 
+                {
+                    name: 'add a role',
+                    value: 'add_a_role'
+                }, 
+                {
+                    name: 'add an employee',
+                    value: 'add_an_employee'
+                }, 
+                {
+                    name: 'update an employee role',
+                    value: 'update_an_employee_role'
+                },
+                {
+                    name: 'Quit',
+                    value: 'QUIT_'
+                }
+                ]
+        }
+    ]).then(answer => {
+        switch (answer.action) {
+            case 'view_all_departments':
+                viewAllDepts();
+                break;
+            case 'view_all_roles':
+                viewAllRoles();
+                break;
+            case 'view_all_employees':
+                viewAllEmps();
+                break;
+            case 'add_a_department':
+                addDept();
+                break;
+            case 'add_an_employee':
+                addEmp();
+                break;
+            case 'update_an_employee_role':
+                updateEmpRole();
+                break;
+            case 'add_a_role':
+                addRole();
+                break;
+            default:
+                quit()
+        }
+    })
+}
 function viewAllDepts() {
     const sql = 'SELECT * FROM department';
     //review activity 21/22
@@ -79,7 +83,7 @@ function viewAllDepts() {
         .query(sql)
         .then(([rows, _]) => {
             console.table(rows);
-            init();
+            loadPrompts()
         })
         .catch(err => console.log(err));   
 }
@@ -90,7 +94,7 @@ function viewAllRoles() {
         .query(sql)
         .then(([rows, _]) => {
             console.table(rows);
-            init();
+           loadPrompts()
         })
         .catch(err => console.log(err));
 }
@@ -107,31 +111,46 @@ function viewAllEmps() {
         .query(sql)
         .then(([rows, _]) => {
             console.table(rows);
-            init();
+           loadPrompts()
         })
         .catch(err => console.log(err));
 }
 
+// function addDept(department) {
+//     inquirer.prompt ([
+//         {
+//             type: 'input',
+//             name: 'add_department',
+//             message: 'What is the name of the department would you like to add?',
+//         }
+//     ]).then(answer => {
+//         console.log(answer.add_department)
+//     })
+
+//     sql = ("INSERT INTO department SET ?", department);
+//     db.promise()
+//     .query(sql)
+//     .then(([rows, _]) => {
+//         console.table(rows); const
+//         init();
+//     })
+//     .catch(err => console.log(err));
+// }
 function addDept() {
     inquirer.prompt ([
         {
             type: 'input',
-            name: 'add_department',
+            name: 'name',
             message: 'What is the name of the department would you like to add?',
         }
-    ]).then(answer => {
-        console.log(answer.add_department)
+    ])
+    .then(res => {
+        let name = res;
+        newDB.addDeptQuery(name)
+        .then(() => console.log(`just added ${name.name} to db`))
+        .then(() => loadPrompts())
     })
-    const sql = 'INSERT INTO department(name) VALUES ("?")'
-    db.promise()
-    .query(sql)
-    .then(([rows, _]) => {
-        console.table(rows);
-        init();
-    })
-    .catch(err => console.log(err));
 }
-
 function addRole() {
     inquirer.prompt ([
         {
@@ -143,12 +162,12 @@ function addRole() {
         console.log(answer.add_role)
     })
 
-    const sql = 'INSERT role.title, role.salary FROM role LEFT JOIN department ON department.name'
+    const sql = 'INSERT INTO role(title, salary) FROM role LEFT JOIN Employee ON employee(first_name, last_name)'
     db.promise()
     .query(sql)
     .then(([rows, _]) => {
         console.table(rows);
-        init();
+       loadPrompts();
     })
     .catch(err => console.log(err));
 }
@@ -180,7 +199,7 @@ function addEmp() {
     .query(sql)
     .then(([rows, _]) => {
         console.table(rows);
-        init();
+        loadPrompts()
     })
     .catch(err => console.log(err));
 }
@@ -191,9 +210,7 @@ function updateEmpRole() {
     .query(sql)
     .then(([rows, _]) => {
         console.table(rows);
-        init();
+       loadPrompts();
     })
     .catch(err => console.log(err));
 }
-
-init();
