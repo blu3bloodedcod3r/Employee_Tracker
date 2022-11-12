@@ -95,7 +95,7 @@ function viewAllRoles() {
         .query(sql)
         .then(([rows, _]) => {
             console.table(rows);
-           loadPrompts()
+            loadPrompts();
         })
         .catch(err => console.log(err));
 }
@@ -112,7 +112,7 @@ function viewAllEmps() {
         .query(sql)
         .then(([rows, _]) => {
             console.table(rows);
-           loadPrompts()
+            loadPrompts();
         })
         .catch(err => console.log(err));
 }
@@ -140,6 +140,10 @@ function addRole() {
             type: 'input',
             name: 'title',
             message: 'What is the role would you like to add?',
+        },{
+            type: 'input',
+            name: 'dept_id',
+            message: 'What is the department ID?',
         }
     ])
     .then(res => {
@@ -148,7 +152,12 @@ function addRole() {
         .then(() => console.log(`just added ${title.title} to db`))
         .then(() => loadPrompts())
     })
-
+    .then(res => {
+        let dept_id = res;
+        newDB.addRoleQuery(dept_id)
+        .then(() => console.log(`just added ${dept_id.dept_id} to db`))
+        .then(() => loadPrompts())
+    })
 }
 
 function addEmp() {
@@ -193,7 +202,7 @@ function addEmp() {
     })
     .then(res => {
         let last_name = res;
-        newDB.addRoleQuery(last_name)
+        newDB.addEmpQuery(last_name)
         .then(() => console.log(`just added ${last_name.last_name} to db`))
         .then(() => loadPrompts())
     })
